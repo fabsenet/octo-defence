@@ -18,7 +18,7 @@ public class RotateToPointer : MonoBehaviour {
 		var target = _cam.ScreenToWorldPoint(Input.mousePosition);
 		target = new Vector3(target.x,target.y, origin.z);
 
-		Debug.DrawLine(origin,target);
+		//Debug.DrawLine(origin,target);
 
 		var newRotation = Quaternion.LookRotation(_cam.transform.forward, target-origin);
 		transform.rotation = newRotation;

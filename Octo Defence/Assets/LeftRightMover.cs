@@ -27,6 +27,7 @@ public class LeftRightMover : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
+		Debug.DrawLine(new Vector3(transform.position.x-_movedDistance,transform.position.y), new Vector3(transform.position.x - _movedDistance+HorizontalDistance, transform.position.y), Color.yellow);
 		var deltaDistance = Time.deltaTime*HorizontalSpeed*(int) _movingDirection;
 
 		_movedDistance += deltaDistance;
