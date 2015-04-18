@@ -20,6 +20,25 @@ public class RotateToPointer : MonoBehaviour {
 		//Debug.DrawLine(origin,target);
 
 		var newRotation = Quaternion.LookRotation(_cam.transform.forward, target-origin);
+
+		var eulerAngle = newRotation.eulerAngles;
+		var z = eulerAngle.z;
+		var isIn0To90 = z >= 0 && z <= 90;
+		var isIn270To360 = z >= 270 && z <= 360;
+		if (!isIn0To90 && !isIn270To360)
+		{
+			//the gun is pointing downwards
+			var distanceTo90 = z - 90;
+			var distanceTo270 = 270 - z;
+			if (distanceTo90 < distanceTo270)
+			{
+				newRotation = Quaternion.Euler(0,0,90);
+			}
+			else
+			{
+				newRotation = Quaternion.Euler(0,0,270);
+			}
+		}
 		transform.rotation = newRotation;
 	}
 }

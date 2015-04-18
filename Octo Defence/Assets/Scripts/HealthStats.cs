@@ -7,6 +7,8 @@ public class HealthStats : MonoBehaviour
 	public float MaxHealthPoints = 100;
 	public float CurrentHealthPoints = 100;
 
+	public Transform DeathAnimationPrefab;
+
 	public void ApplyDamage(float damageInPonts)
 	{
 		CurrentHealthPoints = Mathf.Max(CurrentHealthPoints - damageInPonts, 0);
@@ -15,7 +17,10 @@ public class HealthStats : MonoBehaviour
 		if (CurrentHealthPoints <= 0.00001f)
 		{
 			//dead!
+			var deathAnimation = (Transform)Instantiate(DeathAnimationPrefab, gameObject.transform.position, Quaternion.identity);
+			deathAnimation.parent = gameObject.transform.parent;
 			Destroy(gameObject);
+			Destroy(deathAnimation.gameObject, 3);
 		}
 	}
 }

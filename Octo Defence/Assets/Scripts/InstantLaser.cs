@@ -13,24 +13,26 @@ public class InstantLaser : MonoBehaviour
 
 	public float DamagePerSecond = 30f;
 
-	public float ThicknessInPixel=1;
-
 	private Camera _cam;
 	private Vector3 _maxLaserLength;
 	private LineRenderer _laserRayLineRenderer;
+	private AudioSource _laserSoundSource;
 	private void Start()
 	{
 		_cam = Camera.main;
 		_maxLaserLength = new Vector3(0,50,0);
 
 		_laserRayLineRenderer = LaserRay.GetComponent<LineRenderer>();
+		_laserSoundSource = GetComponent<AudioSource>();
 	}
 
 	void Update ()
 	{
 		var isShooting = Input.GetButton("Fire1");
+
 		_laserRayLineRenderer.enabled = isShooting;
-		if (isShooting)
+		_laserSoundSource.enabled = isShooting;
+        if (isShooting)
 		{
 			var origin = transform.position;
 			var target = _cam.ScreenToWorldPoint(Input.mousePosition);
@@ -58,7 +60,6 @@ public class InstantLaser : MonoBehaviour
 			}
 			else
 			{
-				Debug.Log("Miss!");
 				rayTarget = farTarget;
 			}
 

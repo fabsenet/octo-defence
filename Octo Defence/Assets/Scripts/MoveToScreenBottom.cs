@@ -8,7 +8,9 @@ public class MoveToScreenBottom : MonoBehaviour {
 	{
 		var cam = Camera.main;
 		var worldPos = cam.ScreenToWorldPoint(new Vector3(Screen.width/2f, 0, 0));
-		transform.position =new Vector3(transform.position.x,worldPos.y, transform.position.z);
+		var position = new Vector3(transform.position.x,worldPos.y, transform.position.z);
+		transform.position =position;
+		Debug.Log("moving " + name + " to " + position);
 	}
 	
 	// Update is called once per frame
