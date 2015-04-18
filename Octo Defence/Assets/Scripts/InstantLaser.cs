@@ -10,6 +10,7 @@ public class InstantLaser : MonoBehaviour
 
 	public Transform MuzzlePoint;
 	public Transform LaserRay;
+	public Transform HittableLowerBound;
 
 	public float DamagePerSecond = 30f;
 
@@ -17,6 +18,7 @@ public class InstantLaser : MonoBehaviour
 	private Vector3 _maxLaserLength;
 	private LineRenderer _laserRayLineRenderer;
 	private AudioSource _laserSoundSource;
+
 	private void Start()
 	{
 		_cam = Camera.main;
@@ -30,41 +32,48 @@ public class InstantLaser : MonoBehaviour
 	{
 		var isShooting = Input.GetButton("Fire1");
 
-		_laserRayLineRenderer.enabled = isShooting;
-		_laserSoundSource.enabled = isShooting;
-        if (isShooting)
-		{
+	
 			var origin = transform.position;
 			var target = _cam.ScreenToWorldPoint(Input.mousePosition);
-			target = new Vector3(target.x, target.y, origin.z);
-			var rotation = Quaternion.LookRotation(_cam.transform.forward, target - origin);
-			var farTarget = origin + (rotation * _maxLaserLength);
-			Debug.DrawLine(origin, farTarget, Color.grey);
 
-			var hit = Physics2D.Raycast(origin, target - origin);
+			//disallow shooting downwards
+			isShooting = isShooting && target.y > HittableLowerBound.position.y;
 
-			Vector3 rayTarget;
-			if (hit.collider != null)
+			_laserRayLineRenderer.enabled = isShooting;
+			_laserSoundSource.enabled = isShooting;
+
+			if (isShooting)
 			{
-				Debug.Log("hitting "+hit.collider);
-				Debug.DrawLine(origin, hit.point, LaserColor);
+				target = new Vector3(target.x, target.y, origin.z);
+				var rotation = Quaternion.LookRotation(_cam.transform.forward, target - origin);
+				var farTarget = origin + (rotation*_maxLaserLength);
+				Debug.DrawLine(origin, farTarget, Color.grey);
 
-				rayTarget = hit.point;
+				var hit = Physics2D.Raycast(origin, target - origin, _maxLaserLength.magnitude, HittableLayers);
 
-				var targetHealthStats = hit.collider.GetComponent<HealthStats>();
-				if (targetHealthStats != null)
+				Vector3 rayTarget;
+				if (hit.collider != null)
 				{
-					//the target has health so we will damage it!
-					targetHealthStats.ApplyDamage(Time.deltaTime*DamagePerSecond);
-				}
-			}
-			else
-			{
-				rayTarget = farTarget;
-			}
+					//Debug.Log("hitting " + hit.collider);
+					//Debug.DrawLine(origin, hit.point, LaserColor);
 
-			_laserRayLineRenderer.SetPosition(0, MuzzlePoint.position);
-			_laserRayLineRenderer.SetPosition(1, rayTarget);
-		}
+					rayTarget = hit.point;
+
+					var targetHealthStats = hit.collider.GetComponent<HealthStats>();
+					if (targetHealthStats != null)
+					{
+						//the target has health so we will damage it!
+						targetHealthStats.ApplyDamage(Time.deltaTime*DamagePerSecond);
+					}
+				}
+				else
+				{
+					rayTarget = farTarget;
+				}
+
+				_laserRayLineRenderer.SetPosition(0, MuzzlePoint.position);
+				_laserRayLineRenderer.SetPosition(1, rayTarget);
+			}
+		
 	}
 }

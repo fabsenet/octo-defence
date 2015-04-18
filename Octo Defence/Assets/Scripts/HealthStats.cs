@@ -13,7 +13,7 @@ public class HealthStats : MonoBehaviour
 	{
 		CurrentHealthPoints = Mathf.Max(CurrentHealthPoints - damageInPonts, 0);
 
-		Debug.Log("Took "+ damageInPonts + " damage and have now "+CurrentHealthPoints+" health points left");
+		Debug.Log(name + " took "+ damageInPonts + " damage and has now "+CurrentHealthPoints+" health points left");
 		if (CurrentHealthPoints <= 0.00001f)
 		{
 			//dead!
