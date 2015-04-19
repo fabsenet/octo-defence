@@ -18,6 +18,7 @@ public class RocketController : MonoBehaviour
 	private Vector3 _target;
 	private ConstantForce2D _constantForce;
 	private Rigidbody2D _rigidbody;
+	private AudioSource _audioSource;
 	// Use this for initialization
 	private void Start()
 	{
@@ -25,6 +26,7 @@ public class RocketController : MonoBehaviour
 		_rotateToPointer = GetComponent<RotateToPointer>();
 		_constantForce = GetComponent<ConstantForce2D>();
 		_rigidbody = GetComponent<Rigidbody2D>();
+		_audioSource = GetComponent<AudioSource>();
 
 	}
 	
@@ -84,6 +86,7 @@ public class RocketController : MonoBehaviour
 				_target = new Vector3(target.x, target.y, transform.position.z);
 				_constantForce.enabled = true;
 				Exhaust.gameObject.SetActive(true);
+				_audioSource.Play();
 			}
 		}
 	}
@@ -100,5 +103,6 @@ public class RocketController : MonoBehaviour
 		_rigidbody.velocity = Vector2.zero;
 		_rigidbody.angularVelocity = 0;
 		Exhaust.gameObject.SetActive(false);
+		_audioSource.Stop();
     }
 }
