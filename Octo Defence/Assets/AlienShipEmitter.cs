@@ -30,7 +30,34 @@ public class AlienShipEmitter : MonoBehaviour
 		if (Time.time > _nextEmittingTime)
 		{
 			_nextEmittingTime = Time.time + 1/EmittingRate;
-			Instantiate(AlienShipPrefab, new Vector3(Random.Range(_left, _right), Random.Range(_bottom, _top)), Quaternion.identity);
+
+			var position = new Vector3(Random.Range(_left, _right), Random.Range(_bottom, _top));
+			var clone = (Transform)Instantiate(AlienShipPrefab, position, Quaternion.identity);
+			clone.parent = transform.parent;
+			
+			var leftRightMover = clone.GetComponent<LeftRightMover>();
+
+			var isLeftDirection = Random.Range(0f, 1f) >= 0.5f;
+			leftRightMover.StartDirection = isLeftDirection ? LeftRightMover.MovingDirection.Left : LeftRightMover.MovingDirection.Right;
+
+			var maxDistanceToBoundary = isLeftDirection ? position.x - _left : _right - position.x;
+
+			leftRightMover.HorizontalDistance = Random.Range(0f, maxDistanceToBoundary);
+
+			if (leftRightMover.HorizontalDistance <= 1f)
+			{
+				leftRightMover.HorizontalSpeed = 0f;
+				leftRightMover.HorizontalDistance = 0f;
+			}
+			else if (leftRightMover.HorizontalDistance < 4f)
+            {
+				leftRightMover.HorizontalSpeed = Random.Range(1f, 6f);
+			}
+			else //4+
+			{
+				leftRightMover.HorizontalSpeed = Random.Range(3f, 5.5f);
+			}
+
 		}
 	}
 }
