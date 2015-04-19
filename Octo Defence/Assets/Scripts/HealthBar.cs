@@ -22,7 +22,7 @@ public class HealthBar : MonoBehaviour
 			Debug.LogError("Could not find health stats");
 		}
 
-		var childLineRenderers = GetComponentsInChildren<LineRenderer>();
+		var childLineRenderers = GetComponentsInChildren<LineRenderer>(true);
 		if (childLineRenderers.Count() != 2)
 		{
 			throw new Exception("There should be exactly 2 LineRenderes in Children. Found "+childLineRenderers.Count());

@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Linq;
 
 public class AlienShipEmitter : MonoBehaviour
 {
@@ -30,6 +31,13 @@ public class AlienShipEmitter : MonoBehaviour
 		if (Time.time > _nextEmittingTime)
 		{
 			_nextEmittingTime = Time.time + 1/EmittingRate;
+
+			var alienCount = GameObject.FindGameObjectsWithTag("Enemy").Count();
+			if (alienCount > 200)
+			{
+				Debug.Log("There are "+alienCount+" aliens, skipping emitting of another ship for now");
+				return;
+			}
 
 			var position = new Vector3(Random.Range(_left, _right), Random.Range(_bottom, _top));
 			var clone = (Transform)Instantiate(AlienShipPrefab, position, Quaternion.identity);

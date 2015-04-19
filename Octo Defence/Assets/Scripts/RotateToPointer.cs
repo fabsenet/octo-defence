@@ -11,7 +11,7 @@ public class RotateToPointer : MonoBehaviour {
 	}
 	
 	// Update is called once per frame
-	void Update ()
+	internal void Update ()
 	{
 		var origin = transform.position;
 		var target = _cam.ScreenToWorldPoint(Input.mousePosition);
