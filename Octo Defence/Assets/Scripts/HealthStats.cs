@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
+using UnityEngine.UI;
 
 public class HealthStats : MonoBehaviour
 {
-
 	public float MaxHealthPoints = 100;
 	public float CurrentHealthPoints = 100;
 
@@ -21,6 +21,8 @@ public class HealthStats : MonoBehaviour
 			deathAnimation.parent = gameObject.transform.parent;
 			Destroy(gameObject);
 			Destroy(deathAnimation.gameObject, 3);
+
+			ScoreCounter.AddScore(MaxHealthPoints*100*Random.Range(0.93f, 1.07f));
 		}
 	}
 }
