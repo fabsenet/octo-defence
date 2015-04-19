@@ -20,7 +20,7 @@ public class ScoreCounter : MonoBehaviour
 
 	private void SetScoreText()
 	{
-		_scoreText.text = String.Format("Score: {0:###,###}", Score);
+		_scoreText.text = String.Format("Score: {0:###,##0}", Score);
 	}
 
 	public static void AddScore(float points)
