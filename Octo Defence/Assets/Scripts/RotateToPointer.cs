@@ -1,8 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class RotateToPointer : MonoBehaviour {
+public class RotateToPointer : MonoBehaviour
+{
 	private Camera _cam;
+
+    public GameTimer GameTimer;
 
 	// Use this for initialization
 	void Start ()
@@ -13,6 +16,8 @@ public class RotateToPointer : MonoBehaviour {
 	// Update is called once per frame
 	internal void Update ()
 	{
+	    if (GameTimer != null && GameTimer.IsPaused) return;
+
 		var origin = transform.position;
 		var target = _cam.ScreenToWorldPoint(Input.mousePosition);
 		target = new Vector3(target.x,target.y, origin.z);

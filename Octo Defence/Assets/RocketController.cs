@@ -6,7 +6,7 @@ using System.Collections;
 [RequireComponent(typeof (Rigidbody2D))]
 public class RocketController : MonoBehaviour
 {
-
+    public GameTimer GameTimer;
 	public Transform HittableLowerBound;
 	public Transform Exhaust;
 	public Transform RocketExplosionPrefab;
@@ -74,7 +74,7 @@ public class RocketController : MonoBehaviour
 		else
 		{
 			//point marks the target
-			var isShooting = Input.GetButton("Fire1");
+			var isShooting = Input.GetButton("Fire1") && (GameTimer==null || !GameTimer.IsPaused);
 			var target = _cam.ScreenToWorldPoint(Input.mousePosition);
 			isShooting = isShooting && target.y > HittableLowerBound.position.y;
 
